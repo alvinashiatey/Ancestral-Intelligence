@@ -1,0 +1,141 @@
+/* Global styles */
+@import './reset.css';
+@import './typography.css';
+
+:root {
+	/* Color variables - Static defaults */
+	--color-primary: rgb(188, 146, 0);
+	--color-primary-light: #ffefc9; /* Default static color */
+	--color-primary-mid: rgb(96, 87, 0);
+	--color-primary-dark: rgb(55, 56, 0);
+	--color-secondary: #00d000;
+
+	--font-color-primary: rgb(188, 146, 0); /* Default static color */
+	--font-color-dark: rgb(26, 36, 0);
+	--font-color-mid: rgb(96, 87, 0);
+	--font-color-inactive: rgb(55, 56, 0);
+
+	--color-gray-50: #f9fafb;
+	--color-gray-100: #f3f4f6;
+	--color-gray-200: #e5e7eb;
+	--color-gray-300: #d1d5db;
+	--color-gray-400: #9ca3af;
+	--color-gray-500: #6b7280;
+	--color-gray-600: #4b5563;
+	--color-gray-700: #374151;
+	--color-gray-800: #1f2937;
+	--color-gray-900: rgb(26, 36, 0);
+
+	/* Spacing */
+	--space-1: 0.25rem;
+	--space-2: 0.5rem;
+	--space-3: 0.75rem;
+	--space-4: 1rem;
+	--space-6: 1.5rem;
+	--space-8: 2rem;
+	--space-12: 3rem;
+	--space-16: 4rem;
+
+	/* Border radius */
+	--base-radius: 15px;
+	--radius-sm: calc(var(--base-radius) * 0.125); /* 1.875px */
+	--radius-md: calc(var(--base-radius) * 0.25); /* 3.75px */
+	--radius-lg: calc(var(--base-radius) * 0.5); /* 7.5px */
+	--radius-xl: calc(var(--base-radius) * 1); /* 15px */
+	--radius-full: 9999px;
+
+	/* Component heights */
+	--nav-height: calc(
+		(var(--font-size-xl) * 1.5 + 20px + 2rem) * 2.5
+	); /* font-size * line-height + padding + margin */
+
+	--footer-height: 8rem;
+	--content-width: 95vw;
+	--arrow-size: 4rem; /* Default static size for arrow buttons */
+	--scroll-bar-width: 5px; /* Default static size for scroll bars */
+	--block-margin: 4rem; /* Margin between content blocks */
+}
+
+/* [hidden="true"] {
+	display: none !important;
+} */
+
+body {
+	background-color: #fefefe; 
+	position: relative;
+}
+
+/* Helper classes */
+.container {
+	width: 100%;
+	/* max-width: 1250px; */
+	margin-left: auto;
+	margin-right: auto;
+	/* padding-left: var(--space-4); */
+	/* padding-right: var(--space-4); */
+}
+
+/* Article layout styles - moved from component */
+main {
+	/* max-width: var(--content-width, 1200px); */
+	margin-inline: auto;
+}
+
+#footnotes ol {
+	padding-left: 0;
+	list-style: none;
+	counter-reset: footnote-counter;
+}
+
+#footnotes li {
+	position: relative;
+	padding-left: 2em; /* Space for the number and tab */
+	text-indent: -0.5em; /* Pull the text back to create tab effect after number */
+}
+
+#footnotes li::before {
+	counter-increment: footnote-counter;
+	content: counter(footnote-counter);
+	position: absolute;
+	left: 0;
+	width: 1.5em; /* Width for the number */
+	display: inline-block;
+}
+
+/* #footnotes li {
+	margin-bottom: var(--space-2);
+} */
+
+/* Custom Scroll bar */
+/* Firefox scrollbar styling */
+* {
+	scrollbar-width: thin;
+	scrollbar-color: var(--color-gray-700) var(--color-gray-100);
+}
+
+/* WebKit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+	width: var(--scroll-bar-width);
+}
+
+::-webkit-scrollbar-track {
+	background: var(--color-gray-100);
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--color-gray-700);
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: var(--color-gray-900);
+}
+
+@media (max-width: 768px) {
+	:root {
+		--nav-height: calc(
+			(var(--font-size-xl) * 1.5 + 20px + 2rem) * 1.5
+		); /* Adjusted for smaller screens */
+
+		--block-margin: 2rem; /* Reduced margin between content blocks */
+	}
+}
