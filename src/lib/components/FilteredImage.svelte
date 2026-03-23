@@ -222,7 +222,7 @@
 		margin-top: 0.25rem;
 		margin-block-end: 1rem;
 		font-size: 0.9rem;
-		color: #666;
+		color: #60d6f5;
 		/* text-align: center; */
 		position: relative;
 		z-index: 2;

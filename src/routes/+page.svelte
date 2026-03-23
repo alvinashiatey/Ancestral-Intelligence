@@ -1,8 +1,81 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import FilteredImage from '$lib/components/FilteredImage.svelte';
 	import Header from '$lib/components/layout/Header.svelte';
 	import Nav from '$lib/components/layout/Nav.svelte';
+	import ArchivePanel from '$lib/components/panels/ArchivePanel.svelte';
+	import ClassPanel from '$lib/components/panels/ClassPanel.svelte';
+	import CollaboratorsPanel from '$lib/components/panels/CollaboratorsPanel.svelte';
+	import LibraryPanel from '$lib/components/panels/LibraryPanel.svelte';
+	import Pattern01 from '$lib/components/patterns/Pattern01.svelte';
+	import Pattern02 from '$lib/components/patterns/Pattern02.svelte';
+	import Pattern03 from '$lib/components/patterns/Pattern03.svelte';
+	import RightOverlayPanel from '$lib/components/panels/RightOverlayPanel.svelte';
+	import SessionsPanel from '$lib/components/panels/SessionsPanel.svelte';
 	import { createSEOData } from '$lib/seo';
+
+	type PanelKey = 'collaborators' | 'sessions' | 'library' | 'class' | 'archive';
+
+	const patternComponents = [Pattern01, Pattern02, Pattern03] as const;
+	const panelRegistry = {
+		collaborators: {
+			title: 'Collaborators',
+			backgroundColor: '#506850',
+			component: CollaboratorsPanel
+		},
+		sessions: {
+			title: 'Sessions',
+			backgroundColor: '#af8d58',
+			component: SessionsPanel
+		},
+		library: {
+			title: 'Library',
+			backgroundColor: '#b9afa3',
+			component: LibraryPanel
+		},
+		class: {
+			title: 'Class',
+			backgroundColor: '#3a6a82',
+			component: ClassPanel
+		},
+		archive: {
+			title: 'Archive',
+			backgroundColor: '#9c5a6a',
+			component: ArchivePanel
+		}
+	} as const;
+
+	let activePatternIndex = $state(0);
+	let activePanel = $state<PanelKey | null>(null);
+	const ActivePattern = $derived(patternComponents[activePatternIndex]);
+	const activePanelTitle = $derived(activePanel ? panelRegistry[activePanel].title : '');
+	const activePanelBackgroundColor = $derived(
+		activePanel ? panelRegistry[activePanel].backgroundColor : '#6f5453'
+	);
+	const ActivePanelComponent = $derived(activePanel ? panelRegistry[activePanel].component : null);
+
+	function openPanel(section: PanelKey) {
+		activePanel = section;
+	}
+
+	function closePanel() {
+		activePanel = null;
+	}
+
+	function onHomeSelected() {
+		closePanel();
+	}
+
+	function onWindowKeydown(event: KeyboardEvent) {
+		if (event.key === 'Escape' && activePanel) {
+			closePanel();
+		}
+	}
+
+	onMount(() => {
+		activePatternIndex = Math.floor(Math.random() * patternComponents.length);
+	});
+
 	const seoData = createSEOData({
 		image: '',
 		title: 'Indigenous Knowledge',
@@ -11,11 +84,12 @@
 </script>
 
 <Header {...seoData} />
+<svelte:window onkeydown={onWindowKeydown} />
 <div class="container">
-	<Nav />
+	<Nav onSelectSection={openPanel} onHome={onHomeSelected} />
 	<section class="details">
 		<section class="center">
-			<div class="about">
+			<div class="about-body">
 				<p>
 					Honoring and Incorporating Indigenous Technologies is a cross-cultural, cross-continental
 					initiative exploring how traditional African craft techniques — beadwork, weaving, and
@@ -42,6 +116,9 @@
 					for cross-cultural academic collaboration worldwide.
 				</p>
 			</div>
+			<div class="pattern">
+				<ActivePattern animated fit="slice" />
+			</div>
 		</section>
 		<section class="right">
 			<div class="images">
@@ -55,6 +132,18 @@
 				/>
 			</div>
 		</section>
+
+		{#if activePanel && ActivePanelComponent}
+			{#key activePanel}
+				<RightOverlayPanel
+					title={activePanelTitle}
+					backgroundColor={activePanelBackgroundColor}
+					onClose={closePanel}
+				>
+					<ActivePanelComponent />
+				</RightOverlayPanel>
+			{/key}
+		{/if}
 	</section>
 </div>
 
@@ -66,7 +155,6 @@
 		overflow: hidden;
 	}
 
-	.about,
 	.images {
 		padding-block: var(--padding-main-block, 2rem);
 	}
@@ -74,7 +162,8 @@
 	section.details {
 		width: 80vw;
 		height: 100dvh;
-		overflow-y: hidden;
+		overflow: hidden;
+		position: relative;
 		display: grid;
 		grid-template-columns: 2fr calc(300px + var(--padding-main-block, 2rem) * 2);
 		/* padding-inline-start: var(--padding-main-block, 2rem); */
@@ -85,12 +174,28 @@
 	section.center {
 		overflow-y: auto;
 		padding-inline: var(--padding-main-block, 2rem);
+		position: relative;
+	}
+
+	.about-body {
+		padding-block: var(--padding-main-block, 2rem);
+	}
+
+	section.center .pattern {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		/* z-index: -1; */
+		mix-blend-mode: hue;
 	}
 
 	section.right {
 		overflow-y: auto;
 		padding-inline: var(--padding-main-block, 2rem);
-		background-color: black;
+		position: relative;
+		z-index: 2;
+		background-color: #6f5453;
 	}
 
 	p:not(:last-child) {
