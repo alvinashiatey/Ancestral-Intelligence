@@ -1,16 +1,15 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import FilteredImage from '$lib/components/FilteredImage.svelte';
 	import Header from '$lib/components/layout/Header.svelte';
 	import Nav from '$lib/components/layout/Nav.svelte';
 	import ArchivePanel from '$lib/components/panels/ArchivePanel.svelte';
 	import ClassPanel from '$lib/components/panels/ClassPanel.svelte';
 	import CollaboratorsPanel from '$lib/components/panels/CollaboratorsPanel.svelte';
 	import LibraryPanel from '$lib/components/panels/LibraryPanel.svelte';
+	import PanelStackRail from '$lib/components/panels/PanelStackRail.svelte';
 	import Pattern01 from '$lib/components/patterns/Pattern01.svelte';
 	import Pattern02 from '$lib/components/patterns/Pattern02.svelte';
 	import Pattern03 from '$lib/components/patterns/Pattern03.svelte';
-	import RightOverlayPanel from '$lib/components/panels/RightOverlayPanel.svelte';
 	import SessionsPanel from '$lib/components/panels/SessionsPanel.svelte';
 	import { createSEOData } from '$lib/seo';
 
@@ -48,11 +47,13 @@
 	let activePatternIndex = $state(0);
 	let activePanel = $state<PanelKey | null>(null);
 	const ActivePattern = $derived(patternComponents[activePatternIndex]);
-	const activePanelTitle = $derived(activePanel ? panelRegistry[activePanel].title : '');
-	const activePanelBackgroundColor = $derived(
-		activePanel ? panelRegistry[activePanel].backgroundColor : '#6f5453'
-	);
-	const ActivePanelComponent = $derived(activePanel ? panelRegistry[activePanel].component : null);
+	const panelItems = [
+		{ key: 'collaborators', ...panelRegistry.collaborators },
+		{ key: 'sessions', ...panelRegistry.sessions },
+		{ key: 'library', ...panelRegistry.library },
+		{ key: 'class', ...panelRegistry.class },
+		{ key: 'archive', ...panelRegistry.archive }
+	] as const;
 
 	function openPanel(section: PanelKey) {
 		activePanel = section;
@@ -120,30 +121,12 @@
 				<ActivePattern animated fit="slice" />
 			</div>
 		</section>
-		<section class="right">
-			<div class="images">
-				<FilteredImage src="/images/banor.jpg" alt="Svelte logo" width={300} caption="Banor" />
-				<FilteredImage
-					src="/images/csfahftb.jpg"
-					alt="Svelte logo"
-					width={300}
-					moveStrength={0.25}
-					caption="Cultural Significance of Fabric and Textile in African History"
-				/>
-			</div>
-		</section>
-
-		{#if activePanel && ActivePanelComponent}
-			{#key activePanel}
-				<RightOverlayPanel
-					title={activePanelTitle}
-					backgroundColor={activePanelBackgroundColor}
-					onClose={closePanel}
-				>
-					<ActivePanelComponent />
-				</RightOverlayPanel>
-			{/key}
-		{/if}
+		<PanelStackRail
+			items={panelItems}
+			activeKey={activePanel}
+			onSelect={(key) => openPanel(key as PanelKey)}
+			onClose={closePanel}
+		/>
 	</section>
 </div>
 
@@ -155,17 +138,13 @@
 		overflow: hidden;
 	}
 
-	.images {
-		padding-block: var(--padding-main-block, 2rem);
-	}
-
 	section.details {
 		width: 80vw;
 		height: 100dvh;
 		overflow: hidden;
 		position: relative;
-		display: grid;
-		grid-template-columns: 2fr calc(300px + var(--padding-main-block, 2rem) * 2);
+		display: block;
+		--panel-stack-reserve: clamp(220px, 24vw, 360px);
 		/* padding-inline-start: var(--padding-main-block, 2rem); */
 		/* background-color: tomato; */
 		/* gap: 2.5rem; */
@@ -173,7 +152,8 @@
 
 	section.center {
 		overflow-y: auto;
-		padding-inline: var(--padding-main-block, 2rem);
+		padding-inline-start: var(--padding-main-block, 2rem);
+		padding-inline-end: calc(var(--panel-stack-reserve) + var(--padding-main-block, 2rem));
 		position: relative;
 	}
 
@@ -190,15 +170,13 @@
 		mix-blend-mode: hue;
 	}
 
-	section.right {
-		overflow-y: auto;
-		padding-inline: var(--padding-main-block, 2rem);
-		position: relative;
-		z-index: 2;
-		background-color: #6f5453;
-	}
-
 	p:not(:last-child) {
 		margin-block-end: 1rem;
+	}
+
+	@media (max-width: 900px) {
+		section.details {
+			--panel-stack-reserve: clamp(140px, 22vw, 220px);
+		}
 	}
 </style>
