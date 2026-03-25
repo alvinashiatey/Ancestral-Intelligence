@@ -21,3 +21,11 @@ Thumbs.db
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Local agent/editor metadata
+.agents/
+.roomodes
+.superset/
+.vscode/
+AGENTS.md
+skills-lock.json
