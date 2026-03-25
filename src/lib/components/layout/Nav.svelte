@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
+
 	const { onHome } = $props<{
 		onHome?: () => void;
 	}>();
@@ -15,7 +17,7 @@
 	<!-- </div> -->
 	<ol>
 		<li class="title">
-			<a href="/" onclick={onHomeClick}>
+			<a href={resolve('/')} onclick={onHomeClick}>
 				<h1>Ancestral Intelligence <br /> and Material Knowledge</h1>
 			</a>
 		</li>

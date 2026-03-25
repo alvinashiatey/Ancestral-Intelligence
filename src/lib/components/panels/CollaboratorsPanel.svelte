@@ -1,15 +1,25 @@
 <script lang="ts">
-	import FilteredImage from '$lib/components/FilteredImage.svelte';
+	import Collaborator from '$lib/components/panels/Collaborator.svelte';
 
-	const placeholders = Array.from({ length: 9 }, (_, index) => index + 1);
+	const placeholderBio =
+		'Banor is a visual collaborator exploring archives, performance fragments, and memory studies through image-based storytelling.';
+
+	const collaborators = Array.from({ length: 9 }, (_, index) => ({
+		id: index + 1,
+		imageSrc: '/images/banor.jpg',
+		imageAlt: `Banor collaborator placeholder ${index + 1}`,
+		bio: placeholderBio
+	}));
 </script>
 
 <section class="panel-content">
 	<div class="collaborators-grid">
-		{#each placeholders as id}
-			<div class="collaborator-card">
-				<FilteredImage src="/images/banor.jpg" alt={`Collaborator placeholder ${id}`} width="100%" />
-			</div>
+		{#each collaborators as collaborator (collaborator.id)}
+			<Collaborator
+				imageSrc={collaborator.imageSrc}
+				imageAlt={collaborator.imageAlt}
+				bio={collaborator.bio}
+			/>
 		{/each}
 	</div>
 </section>
@@ -18,26 +28,7 @@
 	.collaborators-grid {
 		display: grid;
 		grid-template-columns: repeat(3, minmax(0, 1fr));
-		gap: 0.75rem;
-	}
-
-	.collaborator-card {
-		min-width: 0;
-		border: 1px solid color-mix(in oklab, currentColor 25%, transparent);
-	}
-
-	.collaborator-card :global(.photo-wrap) {
-		display: block;
-		width: 100%;
-	}
-
-	.collaborator-card :global(.photo) {
-		aspect-ratio: 3 / 4;
-		object-fit: cover;
-	}
-
-	.collaborator-card :global(.caption) {
-		display: none;
+		gap: var(--space-4);
 	}
 
 	@media (max-width: 900px) {

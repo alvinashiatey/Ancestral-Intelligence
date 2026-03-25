@@ -181,7 +181,7 @@
 
 	.panel-card.is-active {
 		left: var(--active-inset);
-		box-shadow: -36px 0 60px color-mix(in oklab, #000 20%, transparent);
+		/* box-shadow: -36px 0 60px color-mix(in oklab, #000 20%, transparent); */
 	}
 
 	.rail.is-collapsing .panel-card {
