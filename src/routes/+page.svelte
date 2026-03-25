@@ -87,10 +87,10 @@
 <Header {...seoData} />
 <svelte:window onkeydown={onWindowKeydown} />
 <div class="container">
-	<Nav onSelectSection={openPanel} onHome={onHomeSelected} />
+	<Nav onHome={onHomeSelected} />
 	<section class="details">
 		<section class="center">
-			<div class="about-body">
+			<article class="about-body">
 				<p>
 					Honoring and Incorporating Indigenous Technologies is a cross-cultural, cross-continental
 					initiative exploring how traditional African craft techniques — beadwork, weaving, and
@@ -116,10 +116,10 @@
 					production, the initiative seeks to reshape arts pedagogy and establish a replicable model
 					for cross-cultural academic collaboration worldwide.
 				</p>
-			</div>
-			<div class="pattern">
-				<ActivePattern animated fit="slice" />
-			</div>
+			</article>
+			<!-- <div class="pattern"> -->
+			<!-- 	<ActivePattern animated fit="slice" /> -->
+			<!-- </div> -->
 		</section>
 		<PanelStackRail
 			items={panelItems}
@@ -161,18 +161,9 @@
 		padding-block: var(--padding-main-block, 2rem);
 	}
 
-	section.center .pattern {
-		position: absolute;
-		inset: 0;
-		width: 100%;
-		height: 100%;
-		/* z-index: -1; */
-		mix-blend-mode: hue;
-	}
-
-	p:not(:last-child) {
-		margin-block-end: 1rem;
-	}
+	/* p:not(:last-child) { */
+	/* 	margin-block-end: 1rem; */
+	/* } */
 
 	@media (max-width: 900px) {
 		section.details {

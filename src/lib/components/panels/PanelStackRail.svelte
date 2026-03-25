@@ -34,6 +34,10 @@
 	let collapseTimer: ReturnType<typeof setTimeout> | null = null;
 
 	$effect(() => {
+		if (activeKey) {
+			hoveredKey = null;
+		}
+
 		if (previousActiveKey && !activeKey) {
 			isCollapsing = true;
 			if (collapseTimer) clearTimeout(collapseTimer);
@@ -99,6 +103,9 @@
 					aria-label={`Open ${item.title} panel`}
 					onmouseenter={() => {
 						if (!activeKey) hoveredKey = item.key;
+					}}
+					onmouseleave={() => {
+						if (!activeKey && hoveredKey === item.key) hoveredKey = null;
 					}}
 					onfocus={() => {
 						if (!activeKey) hoveredKey = item.key;
@@ -258,6 +265,8 @@
 		width: auto;
 		max-width: none;
 		padding: 0;
+		display: flex;
+		align-items: center;
 	}
 
 	.panel-card.is-active .tab-text-vertical {
@@ -269,6 +278,8 @@
 	.panel-card.is-active .tab-text-horizontal {
 		opacity: 1;
 		transform: translateY(0);
+		position: static;
+		white-space: normal;
 	}
 
 	.panel-card:not(.is-active) .panel-hit:hover + .edge-tab,
@@ -294,7 +305,7 @@
 		height: 100%;
 		position: relative;
 		z-index: 1;
-		color: #f4efe6;
+		color: var(--panel-bg);
 	}
 
 	.panel-head {
@@ -302,7 +313,7 @@
 		justify-content: flex-end;
 		align-items: center;
 		padding: 1rem var(--padding-main-block, 2rem);
-		border-bottom: 1px solid color-mix(in oklab, #fff 20%, transparent);
+		border-bottom: 2px solid var(--panel-bg);
 	}
 
 	.panel-body {

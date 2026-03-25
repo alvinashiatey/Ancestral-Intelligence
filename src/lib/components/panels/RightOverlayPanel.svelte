@@ -109,7 +109,7 @@
 		justify-content: space-between;
 		align-items: center;
 		padding: 1rem var(--padding-main-block, 2rem);
-		border-bottom: 1px solid color-mix(in oklab, #f4efe6 18%, transparent);
+		background-color: 2px solid var(--panel-bg);
 		position: relative;
 		z-index: 1;
 	}
