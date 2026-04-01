@@ -5,15 +5,19 @@
 :root {
 	/* Color variables - Static defaults */
 	--color-primary: rgb(188, 146, 0);
-	--color-primary-light: #ffefc9; /* Default static color */
+	--color-primary-light: #ffefc9;
+	/* Default static color */
 	--color-primary-mid: rgb(96, 87, 0);
 	--color-primary-dark: rgb(55, 56, 0);
 	--color-secondary: #00d000;
 
-	--font-color-primary: rgb(188, 146, 0); /* Default static color */
+	--font-color-primary: rgb(188, 146, 0);
+	/* Default static color */
 	--font-color-dark: rgb(26, 36, 0);
 	--font-color-mid: rgb(96, 87, 0);
 	--font-color-inactive: rgb(55, 56, 0);
+
+	--bg-tint: #673399;
 
 	--color-gray-50: #f9fafb;
 	--color-gray-100: #f3f4f6;
@@ -38,22 +42,28 @@
 
 	/* Border radius */
 	--base-radius: 15px;
-	--radius-sm: calc(var(--base-radius) * 0.125); /* 1.875px */
-	--radius-md: calc(var(--base-radius) * 0.25); /* 3.75px */
-	--radius-lg: calc(var(--base-radius) * 0.5); /* 7.5px */
-	--radius-xl: calc(var(--base-radius) * 1); /* 15px */
+	--radius-sm: calc(var(--base-radius) * 0.125);
+	/* 1.875px */
+	--radius-md: calc(var(--base-radius) * 0.25);
+	/* 3.75px */
+	--radius-lg: calc(var(--base-radius) * 0.5);
+	/* 7.5px */
+	--radius-xl: calc(var(--base-radius) * 1);
+	/* 15px */
 	--radius-full: 9999px;
 
 	/* Component heights */
-	--nav-height: calc(
-		(var(--font-size-xl) * 1.5 + 20px + 2rem) * 2.5
-	); /* font-size * line-height + padding + margin */
+	--nav-height: calc((var(--font-size-xl) * 1.5 + 20px + 2rem) * 2.5);
+	/* font-size * line-height + padding + margin */
 
 	--footer-height: 8rem;
 	--content-width: 95vw;
-	--arrow-size: 4rem; /* Default static size for arrow buttons */
-	--scroll-bar-width: 5px; /* Default static size for scroll bars */
-	--block-margin: 4rem; /* Margin between content blocks */
+	--arrow-size: 4rem;
+	/* Default static size for arrow buttons */
+	--scroll-bar-width: 5px;
+	/* Default static size for scroll bars */
+	--block-margin: 4rem;
+	/* Margin between content blocks */
 }
 
 /* [hidden="true"] {
@@ -61,7 +71,7 @@
 } */
 
 body {
-	background-color: #fefefe; 
+	background-color: #fefefe;
 	position: relative;
 }
 
@@ -89,8 +99,10 @@ main {
 
 #footnotes li {
 	position: relative;
-	padding-left: 2em; /* Space for the number and tab */
-	text-indent: -0.5em; /* Pull the text back to create tab effect after number */
+	padding-left: 2em;
+	/* Space for the number and tab */
+	text-indent: -0.5em;
+	/* Pull the text back to create tab effect after number */
 }
 
 #footnotes li::before {
@@ -98,7 +110,8 @@ main {
 	content: counter(footnote-counter);
 	position: absolute;
 	left: 0;
-	width: 1.5em; /* Width for the number */
+	width: 1.5em;
+	/* Width for the number */
 	display: inline-block;
 }
 
@@ -132,10 +145,10 @@ main {
 
 @media (max-width: 768px) {
 	:root {
-		--nav-height: calc(
-			(var(--font-size-xl) * 1.5 + 20px + 2rem) * 1.5
-		); /* Adjusted for smaller screens */
+		--nav-height: calc((var(--font-size-xl) * 1.5 + 20px + 2rem) * 1.5);
+		/* Adjusted for smaller screens */
 
-		--block-margin: 2rem; /* Reduced margin between content blocks */
+		--block-margin: 2rem;
+		/* Reduced margin between content blocks */
 	}
 }

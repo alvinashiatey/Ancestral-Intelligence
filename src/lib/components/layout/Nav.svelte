@@ -1,13 +1,27 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 
-	const { onHome } = $props<{
+	const {
+		onHome,
+		onTitleEnter: onTitleEnterCallback,
+		onTitleLeave: onTitleLeaveCallback
+	} = $props<{
 		onHome?: () => void;
+		onTitleEnter?: () => void;
+		onTitleLeave?: () => void;
 	}>();
 
 	function onHomeClick(event: MouseEvent) {
 		event.preventDefault();
 		onHome?.();
+	}
+
+	function onTitleEnter() {
+		onTitleEnterCallback?.();
+	}
+
+	function onTitleLeave() {
+		onTitleLeaveCallback?.();
 	}
 </script>
 
@@ -17,7 +31,14 @@
 	<!-- </div> -->
 	<ol>
 		<li class="title">
-			<a href={resolve('/')} onclick={onHomeClick}>
+			<a
+				href={resolve('/')}
+				onclick={onHomeClick}
+				onpointerenter={onTitleEnter}
+				onpointerleave={onTitleLeave}
+				onfocus={onTitleEnter}
+				onblur={onTitleLeave}
+			>
 				<h1>Ancestral Intelligence <br /> and Material Knowledge</h1>
 			</a>
 		</li>

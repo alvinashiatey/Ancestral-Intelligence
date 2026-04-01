@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import Header from '$lib/components/layout/Header.svelte';
 	import Nav from '$lib/components/layout/Nav.svelte';
+	import BackgroundCanvas from '$lib/components/BackgroundCanvas.svelte';
 	import ArchivePanel from '$lib/components/panels/ArchivePanel.svelte';
 	import ClassPanel from '$lib/components/panels/ClassPanel.svelte';
 	import CollaboratorsPanel from '$lib/components/panels/CollaboratorsPanel.svelte';
@@ -46,6 +47,7 @@
 
 	let activePatternIndex = $state(0);
 	let activePanel = $state<PanelKey | null>(null);
+	let isTitleHovered = $state(false);
 	const ActivePattern = $derived(patternComponents[activePatternIndex]);
 	const panelItems = [
 		{ key: 'collaborators', ...panelRegistry.collaborators },
@@ -67,6 +69,14 @@
 		closePanel();
 	}
 
+	function onTitleEnter() {
+		isTitleHovered = true;
+	}
+
+	function onTitleLeave() {
+		isTitleHovered = false;
+	}
+
 	function onWindowKeydown(event: KeyboardEvent) {
 		if (event.key === 'Escape' && activePanel) {
 			closePanel();
@@ -86,8 +96,11 @@
 
 <Header {...seoData} />
 <svelte:window onkeydown={onWindowKeydown} />
+<BackgroundCanvas {isTitleHovered} tintVariable="--bg-tint" tintFallback="#673399" />
 <div class="container">
-	<Nav onHome={onHomeSelected} />
+	<div class="nav-layer">
+		<Nav onHome={onHomeSelected} {onTitleEnter} {onTitleLeave} />
+	</div>
 	<section class="details">
 		<section class="center">
 			<article class="about-body">
@@ -136,6 +149,13 @@
 		/* gap: 2.5rem; */
 		height: 100dvh;
 		overflow: hidden;
+		position: relative;
+		z-index: 1;
+	}
+
+	.nav-layer {
+		position: relative;
+		z-index: 6;
 	}
 
 	section.details {
